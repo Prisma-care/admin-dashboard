@@ -1,7 +1,7 @@
 {
   "name": "prisma-dashboard",
   "version": "1.0.0",
-  "description": "An administrator dashboard for Prisma",
+  "description": "A dashboard for managing Prisma's content",
   "author": "Michiel Leyman <michiel.leyman@gmail.com>",
   "private": true,
   "scripts": {
