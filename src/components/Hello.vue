@@ -48,6 +48,7 @@ li {
 }
 
 a {
-  color: #42b983;
+  color: #20a0ff;
+  text-decoration: none;
 }
 </style>
