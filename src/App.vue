@@ -1,22 +1,30 @@
 <template>
   <div id="app">
+    <button @click="login">Login</button>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { login } from '@/api/prisma';
-
 export default {
   name: 'app',
-  mounted() {
-    login('dummy@local.com', 'qwerty')
-      .then((res) => {
-        console.log('Response', res);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
+  data() {
+    return {
+      email: 'dummy@local.com',
+      password: 'qwerty'
+    };
+  },
+  methods: {
+    login() {
+      this.$auth.login({
+        data: { email: this.email, password: this.password },
+        success: (res) => {
+          this.$auth.token(null, res.data.response.token);
+          this.$auth.user({ id: res.data.response.id, email: this.email });
+        },
+        error: () => {},
       });
+    }
   }
 };
 </script>
