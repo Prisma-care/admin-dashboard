@@ -10,6 +10,7 @@ export default new Router({
       path: '/',
       name: 'album-overview',
       component: AlbumOverview,
+      meta: { auth: true }
     },
   ],
 });
