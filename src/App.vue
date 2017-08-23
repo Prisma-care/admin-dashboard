@@ -1,5 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" v-if="$auth.ready()">
+    <button @click="login" v-if="!$auth.check()">Login</button>
+    <button @click="$auth.logout()" v-if="$auth.check()">Logout</button>
     <router-view></router-view>
   </div>
 </template>
@@ -7,6 +9,23 @@
 <script>
 export default {
   name: 'app',
+  data() {
+    return {
+      email: 'dummy@local.com',
+      password: 'qwerty'
+    };
+  },
+  methods: {
+    login() {
+      this.$auth.login({
+        data: { email: this.email, password: this.password },
+        rememberMe: true,
+        error: (res) => {
+          console.log(res.data);
+        },
+      });
+    }
+  }
 };
 </script>
 
