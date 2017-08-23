@@ -28,9 +28,13 @@ Vue.use(VueAuth, {
   auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
   http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
   router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
-  loginData: { url: 'user/signin', method: 'POST', redirect: '/', fetchUser: false },
+  loginData: { url: 'user/signin', method: 'POST', redirect: '/' },
+  logoutData: { url: 'user/signout', method: 'POST', redirect: '/login', makeRequest: true },
+  fetchData: { url: 'user', method: 'GET', enabled: true },
   authRedirect: { path: '/login' },
+  refreshData: { enabled: false, interval: 0 },
   forbiddenRedirect: { path: '/403' },
+  expiredToken: () => false,
   parseUserData: data => data.response
 });
 

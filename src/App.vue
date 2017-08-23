@@ -1,6 +1,7 @@
 <template>
-  <div id="app">
-    <button @click="login">Login</button>
+  <div id="app" v-if="$auth.ready()">
+    <button @click="login" v-if="!$auth.check()">Login</button>
+    <button @click="$auth.logout()" v-if="$auth.check()">Logout</button>
     <router-view></router-view>
   </div>
 </template>
@@ -18,11 +19,10 @@ export default {
     login() {
       this.$auth.login({
         data: { email: this.email, password: this.password },
-        success: (res) => {
-          this.$auth.token(null, res.data.response.token);
-          this.$auth.user({ id: res.data.response.id, email: this.email });
+        rememberMe: true,
+        error: (res) => {
+          console.log(res.data);
         },
-        error: () => {},
       });
     }
   }
