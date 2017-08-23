@@ -7,6 +7,15 @@
 <script>
 export default {
   name: 'app',
+  mounted() {
+    this.axios.post('https://prisma-api.dev/v1/user')
+      .then((res) => {
+        console.log('Response', res);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  }
 };
 </script>
 
