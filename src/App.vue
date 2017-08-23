@@ -5,10 +5,12 @@
 </template>
 
 <script>
+import { login } from '@/api/prisma';
+
 export default {
   name: 'app',
   mounted() {
-    this.axios.post('https://prisma-api.dev/v1/user')
+    login('dummy@local.com', 'qwerty')
       .then((res) => {
         console.log('Response', res);
       })
