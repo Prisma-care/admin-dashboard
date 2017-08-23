@@ -14,7 +14,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Roboto|Varela+Round');
 
 #app {
-  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

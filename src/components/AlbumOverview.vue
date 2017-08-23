@@ -1,19 +1,26 @@
 <template>
     <el-row>
-      <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
+      <el-col :span="8">
         <el-card :body-style="{ padding: '0px' }">
-          <img src="../assets/logo.png" class="image">
-          <div>
-            <span>Yummy hamburger</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button">Operating button</el-button>
-            </div>
+          <div class="asset-preview">
+            <img src="../assets/logo.png">
+            <el-badge :value="12"></el-badge>
+          </div>
+          <div class="album-info bottom clearfix">
+            <h2>Album name</h2>
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <i class="el-icon-caret-bottom el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item><i class="el-icon-edit"></i>Rename</el-dropdown-item>
+                <el-dropdown-item><i class="el-icon-delete"></i>Remove</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
         </el-card>
       </el-col>
     </el-row>
-
 </template>
 
 <script>
@@ -21,35 +28,49 @@ export default {
   name: 'album-overview',
   data() {
     return {
-      currentDate: new Date(),
+
     };
-  },
+  }
 };
 </script>
 
 <style scoped>
-.time {
-  font-size: 13px;
-  color: #999;
+.el-card div.album-info {
+  padding: 6px 14px;
 }
 
-.el-card div {
-  padding: 14px;
+.asset-preview {
+  padding: 0;
+  position: relative;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+.el-badge {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
 }
 
 .bottom {
-  margin-top: 13px;
+  margin-top: 6px;
   line-height: 12px;
 }
 
-.button {
-  padding: 0;
+h2 {
+  float: left;
+}
+
+.el-dropdown {
+  margin-top: 14px; /* padding/2 + line-height/2 */
   float: right;
 }
 
-.image {
-  width: 100%;
-  display: block;
+.el-dropdown-menu i {
+  padding-right: 8px;
 }
 
 .clearfix:before,
