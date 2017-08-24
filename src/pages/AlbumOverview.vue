@@ -1,11 +1,9 @@
 <template>
-    <el-row>
-      <el-col :span="8">
-        <Album v-for="album in albums" :key="album.id" :album="album">
-          {{ album.title }}
-        </Album>
-      </el-col>
-    </el-row>
+  <div class="container">
+    <Album v-for="album in albums" :key="album.id" :album="album" class="album">
+      {{ album.title }}
+    </Album>
+  </div>
 </template>
 
 <script>
@@ -31,5 +29,18 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  font-size: 0;
+  flex-wrap: wrap;
+}
 
+.album {
+  flex-grow: 1;
+  margin: 10px 0 0 20px;
+  /* 3 items per row, - margin - border */
+  width: calc(100% * (1/3) - 20px - 2px);
+}
 </style>
