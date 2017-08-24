@@ -47,8 +47,9 @@ export default {
 </script>
 
 <style scoped>
-.el-card div.album-info {
+.album div.album-info {
   padding: 6px 14px;
+  display: block;
 }
 
 .asset-preview {
