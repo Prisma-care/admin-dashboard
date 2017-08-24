@@ -2,6 +2,7 @@
   <el-card :body-style="{ padding: '0px' }">
     <div class="asset-preview">
       <img v-if="this.cover" :src="this.cover">
+      <div v-if="!this.cover">No image to show</div>
       <el-badge :value="heritageAmount"></el-badge>
     </div>
     <div class="album-info bottom clearfix">
@@ -63,9 +64,9 @@ img {
 }
 
 .el-badge {
-    position: absolute;
-    right: 10px;
-    bottom: 0;
+  position: absolute;
+  right: 10px;
+  bottom: 0;
 }
 
 .bottom {
@@ -74,6 +75,7 @@ img {
 }
 
 h2 {
+  font-size: 1.1rem;
   float: left;
 }
 
@@ -88,11 +90,11 @@ h2 {
 
 .clearfix:before,
 .clearfix:after {
-    display: table;
-    content: "";
+  display: table;
+  content: "";
 }
 
 .clearfix:after {
-    clear: both
+  clear: both;
 }
 </style>
