@@ -7,13 +7,19 @@
     </div>
     <div class="album-info bottom clearfix">
       <h2><slot></slot></h2>
-      <el-dropdown>
+      <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
           <i class="el-icon-caret-bottom el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><i class="el-icon-edit"></i>Rename</el-dropdown-item>
-          <el-dropdown-item><i class="el-icon-delete"></i>Remove</el-dropdown-item>
+          <el-dropdown-item command="renameAlbum">
+            <i class="el-icon-edit"></i>
+            <span>Rename</span>
+          </el-dropdown-item>
+          <el-dropdown-item command="removeAlbum">
+            <i class="el-icon-delete"></i>
+            <span>Remove</span>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -34,6 +40,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.album);
     const coverSource = this.album.heritage[0].asset_name;
     if (!coverSource) return;
     api.getProtectedImage(coverSource).then((response) => {
@@ -43,6 +50,32 @@ export default {
       console.log(err);
     });
     this.heritageAmount = this.album.heritage.length;
+  },
+  methods: {
+    handleCommand(method) {
+      this[method]();
+    },
+    renameAlbum() {
+      this.$prompt('Name', `Rename album "${this.album.title}"`, {
+        confirmButtonText: 'Rename',
+        cancelButtonText: 'Cancel',
+      }).then((confirmed) => {
+        const albumTitle = confirmed.value;
+        api.renameDefaultAlbum(this.album.id, albumTitle).then(() => {
+          this.album.title = albumTitle;
+          this.$message({
+            showClose: true,
+            message: 'Album renamed successfully',
+            type: 'success'
+          });
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+    },
+    removeAlbum() {
+      //
+    }
   }
 };
 </script>
@@ -85,7 +118,13 @@ h2 {
 }
 
 .el-dropdown-menu i {
+  color: #20a0ff;
   padding-right: 8px;
+}
+
+.el-dropdown-menu span {
+  display: inline-block;
+  padding-right: 10px;
 }
 
 .clearfix:before,
