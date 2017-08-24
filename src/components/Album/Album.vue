@@ -7,7 +7,7 @@
     </div>
     <div class="album-info bottom clearfix">
       <h2><slot></slot></h2>
-      <el-dropdown @command="handleCommand">
+      <el-dropdown @command="handleCommand" :hide-on-click="confirmingRemoval">
         <span class="el-dropdown-link">
           <i class="el-icon-caret-bottom el-icon--right"></i>
         </span>
@@ -16,9 +16,10 @@
             <i class="el-icon-edit"></i>
             <span>Rename</span>
           </el-dropdown-item>
-          <el-dropdown-item command="removeAlbum">
+          <el-dropdown-item :class="{ 'danger': confirmingRemoval }" command="removeAlbum">
             <i class="el-icon-delete"></i>
-            <span>Remove</span>
+            <span v-if="!confirmingRemoval">Remove</span>
+            <span v-else>Sure?</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -36,11 +37,11 @@ export default {
   data() {
     return {
       cover: null,
+      confirmingRemoval: false,
       heritageAmount: 0
     };
   },
   mounted() {
-    console.log(this.album);
     const coverSource = this.album.heritage[0].asset_name;
     if (!coverSource) return;
     api.getProtectedImage(coverSource).then((response) => {
@@ -52,8 +53,8 @@ export default {
     this.heritageAmount = this.album.heritage.length;
   },
   methods: {
-    handleCommand(method) {
-      this[method]();
+    handleCommand(method, ...args) {
+      this[method](args);
     },
     renameAlbum() {
       this.$prompt('Name', `Rename album "${this.album.title}"`, {
@@ -71,10 +72,14 @@ export default {
         }).catch((err) => {
           console.log(err);
         });
-      });
+      }).catch(() => {});
     },
     removeAlbum() {
-      //
+      if (!this.confirmingRemoval) {
+        this.confirmingRemoval = true;
+        return;
+      }
+      setTimeout(() => { this.confirmingRemoval = false; }, 200);
     }
   }
 };
@@ -120,6 +125,10 @@ h2 {
 .el-dropdown-menu i {
   color: #20a0ff;
   padding-right: 8px;
+}
+
+.el-dropdown-menu .danger i, .danger {
+  color: #ff4949;
 }
 
 .el-dropdown-menu span {
