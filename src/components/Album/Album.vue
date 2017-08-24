@@ -2,7 +2,7 @@
   <el-card :body-style="{ padding: '0px' }">
     <div class="asset-preview">
       <img v-if="this.cover" :src="this.cover">
-      <el-badge :value="12"></el-badge>
+      <el-badge :value="heritageAmount"></el-badge>
     </div>
     <div class="album-info bottom clearfix">
       <h2><slot></slot></h2>
@@ -28,7 +28,8 @@ export default {
   props: ['album'],
   data() {
     return {
-      cover: null
+      cover: null,
+      heritageAmount: 0
     };
   },
   mounted() {
@@ -40,8 +41,7 @@ export default {
     }).catch((err) => {
       console.log(err);
     });
-    const heritageAmount = this.album.heritage.length;
-    console.log(heritageAmount);
+    this.heritageAmount = this.album.heritage.length;
   }
 };
 </script>

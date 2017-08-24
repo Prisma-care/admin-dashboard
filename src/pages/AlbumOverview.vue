@@ -2,7 +2,7 @@
     <el-row>
       <el-col :span="8">
         <Album v-for="album in albums" :key="album.id" :album="album">
-          {{album.title}}
+          {{ album.title }}
         </Album>
       </el-col>
     </el-row>
@@ -10,7 +10,7 @@
 
 <script>
 import * as api from '@/api/';
-import Album from './Album/Album';
+import Album from '@/components/Album/Album';
 
 export default {
   name: 'album-overview',

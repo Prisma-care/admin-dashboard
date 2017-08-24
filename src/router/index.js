@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AlbumOverview from '@/components/AlbumOverview';
+import AlbumOverview from '@/pages/AlbumOverview';
 
 Vue.use(Router);
 
