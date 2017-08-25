@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AlbumOverview from '@/pages/AlbumOverview';
-import Heritage from '@/pages/Heritage';
+import Album from '@/pages/Album';
+import Story from '@/pages/Story';
 
 Vue.use(Router);
 
@@ -10,14 +10,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'album-overview',
-      component: AlbumOverview,
+      name: 'album',
+      component: Album,
       meta: { auth: true }
     },
     {
       path: '/album/:id',
-      name: 'heritage',
-      component: Heritage,
+      name: 'story',
+      component: Story,
       meta: { auth: true }
     },
   ],

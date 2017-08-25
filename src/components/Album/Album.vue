@@ -1,6 +1,6 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
-    <router-link :to="{ name: 'heritage', params: { id: album.id } }">
+    <router-link :to="{ name: 'story', params: { id: album.id } }">
       <div class="asset-preview">
         <img v-if="this.cover" :src="this.cover">
         <div v-if="!this.cover" class="no-image">No image to show</div>
@@ -8,7 +8,7 @@
       </div>
     </router-link>
     <div class="album-info bottom clearfix">
-      <router-link :to="{ name: 'heritage', params: { id: album.id } }">
+      <router-link :to="{ name: 'story', params: { id: album.id } }">
         <h2><slot></slot></h2>
       </router-link>
       <RenameRemoveDropdown @rename="renameAlbum" @remove="removeAlbum" :confirming-removal="confirmingRemoval"></RenameRemoveDropdown>
