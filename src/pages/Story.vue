@@ -1,20 +1,22 @@
 <template>
   <div class="container" v-loading.body="loading">
     <header>
-      <div class="">
+      <div>
         <h1 class="logo" v-if="album">{{ album.title }}</h1>
         <RenameRemoveDropdown @rename="renameAlbum" @remove="removeAlbum" :confirming-removal="confirmingRemoval"></RenameRemoveDropdown>
       </div>
       <el-button class="button" @click="addStory">Add story</el-button>
     </header>
-    <div v-if="ftue" class="ftue">
-      <p>
-        No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
-      </p>
+    <div class="story-container">
+      <div v-if="ftue" class="ftue">
+        <p>
+          No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
+        </p>
+      </div>
+      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" class="story" v-on:delete-album="removeStory(index)">
+        {{ story.description }}
+      </Story>
     </div>
-    <Story v-else v-for="(story, index) in stories" :key="album.id" :album="album" class="album" v-on:delete-album="removeAlbum(index)">
-      {{ album.title }}
-    </Story>
   </div>
 </template>
 
@@ -46,6 +48,9 @@ export default {
     });
   },
   methods: {
+    removeStory() {
+      //
+    },
     setDescription(description) {
       this.description = description;
     },
@@ -120,5 +125,17 @@ export default {
 <style scoped>
 h1 {
   padding-right: 10px;
+}
+
+.story-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.story {
+  flex-grow: 1;
+  margin: 10px 0 0 20px;
+  /* 3 items per row, - margin - border */
+  width: calc(100% * (1/3) - 20px - 2px);
 }
 </style>
