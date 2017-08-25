@@ -43,7 +43,10 @@ export default {
   mounted() {
     api.getDefaultAlbum(this.$route.params.id).then((res) => {
       this.album = res.data.response;
-      if (!this.album.heritage.length) this.ftue = true;
+      if (!this.album.heritage.length) {
+        this.ftue = true;
+        this.loading = false;
+      }
     }).catch((err) => {
       console.log(err);
     });
