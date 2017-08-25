@@ -32,16 +32,37 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto|Varela+Round');
 
-#app {
+body {
   font-family: 'Roboto', Helvetica, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
+}
+
+#app {
   margin-top: 60px;
 }
 
-h1, h2 {
+h1, h2, .el-message-box__title {
   font-family: 'Varela Round', Helvetica, Arial, sans-serif;
+}
+
+h1.logo {
+  background-image: url('./assets/logo.png');
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: 55px;
+  padding-left: 70px;
+  display: inline-block;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
 }
 </style>
