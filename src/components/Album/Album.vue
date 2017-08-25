@@ -8,7 +8,9 @@
       </div>
     </router-link>
     <div class="album-info bottom clearfix">
-      <h2><slot></slot></h2>
+      <router-link :to="{ name: 'heritage', params: { id: album.id } }">
+        <h2><slot></slot></h2>
+      </router-link>
       <el-dropdown @command="handleCommand" :hide-on-click="confirmingRemoval">
         <span class="el-dropdown-link">
           <i class="el-icon-caret-bottom el-icon--right"></i>
