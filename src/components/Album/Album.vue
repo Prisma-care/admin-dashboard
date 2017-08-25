@@ -140,14 +140,4 @@ h2 {
   display: inline-block;
   padding-right: 10px;
 }
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-
-.clearfix:after {
-  clear: both;
-}
 </style>

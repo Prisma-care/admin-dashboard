@@ -1,8 +1,14 @@
 <template>
   <div class="container">
-    <Album v-for="(album, index) in albums" :key="album.id" :album="album" class="album" v-on:delete-album="removeAlbum(index)">
-      {{ album.title }}
-    </Album>
+    <header>
+      <h1 class="logo">Default albums</h1>
+      <el-button class="add-album">Add album</el-button>
+    </header>
+    <div class="album-container">
+      <Album v-for="(album, index) in albums" :key="album.id" :album="album" class="album" v-on:delete-album="removeAlbum(index)">
+        {{ album.title }}
+      </Album>
+    </div>
   </div>
 </template>
 
@@ -42,9 +48,26 @@ export default {
 .container {
   width: 70%;
   margin: 0 auto;
+}
+
+header {
   display: flex;
-  font-size: 0;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px;
+  height: 80px;
+}
+
+.album-container {
+  display: flex;
   flex-wrap: wrap;
+}
+
+.add-album {
+  color: #20a0ff;
+  border-color: #20a0ff;
+  font-weight: bold;
+  height: 50%;
 }
 
 .album {
