@@ -15,7 +15,7 @@
           No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
         </p>
       </div>
-      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" v-on:delete-album="removeStory(index)">
+      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" v-on:delete-album="removeStory(index)" @loading-stopped="loading = false">
         {{ story.description }}
       </Story>
     </div>
@@ -44,7 +44,6 @@ export default {
     api.getDefaultAlbum(this.$route.params.id).then((res) => {
       this.album = res.data.response;
       if (!this.album.heritage.length) this.ftue = true;
-      this.loading = false;
     }).catch((err) => {
       console.log(err);
     });
@@ -60,10 +59,9 @@ export default {
       this.file = file;
     },
     addStory() {
-      const h = this.$createElement;
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
-        message: h(CreateStoryModalContent, {
+        message: this.$createElement(CreateStoryModalContent, {
           on: {
             'description-updated': this.setDescription,
             'file-chosen': this.setFile

@@ -5,7 +5,16 @@
       <div v-if="!this.cover" class="no-image">No image to show</div>
     </div>
     <div class="story-info bottom clearfix">
-      <el-input type="textarea"autosize placeholder="Story description" v-model="description">
+      <el-dropdown @command="handleCommand">
+        <span class="el-dropdown-link"><i class="el-icon-caret-bottom el-icon--right"></i></span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="replaceImage">
+            <i class="el-icon-picture"></i>
+            <span>Replace image</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-input type="textarea" autosize placeholder="Story description" v-model="description">
       </el-input>
       <div class="actions" v-if="description !== lastDescription">
         <el-button @click="cancelEdits">Cancel</el-button>
@@ -32,15 +41,25 @@ export default {
     this.lastDescription = this.story.description;
     this.description = this.story.description;
     const coverSource = this.story.asset_name;
-    if (!coverSource) return;
+    if (!coverSource) {
+      this.$emit('loading-stopped');
+      return;
+    }
     api.getProtectedImage(coverSource).then((response) => {
       const type = response.headers['content-type'];
       this.cover = arrayBufferToDataUrl(response.data, type);
+      this.$emit('loading-stopped');
     }).catch((err) => {
       console.log(err);
     });
   },
   methods: {
+    handleCommand(method, ...args) {
+      this[method](args);
+    },
+    replaceImage() {
+      console.log('replacing');
+    },
     cancelEdits() {
       this.description = this.lastDescription;
     },
@@ -103,12 +122,27 @@ div.actions {
   float: right;
 }
 
-.el-button + .el-button {
-  margin-left: 5px;
-}
-
 .bottom {
   margin-top: 6px;
   line-height: 12px;
+  position: relative;
+}
+
+.el-dropdown {
+  background: #fff;
+  position: absolute;
+  padding: 7px;
+  border-radius: 5px 5px 0 0;
+  top: -25px;
+  right: 0;
+}
+
+.el-dropdown-menu i {
+  color: #20a0ff;
+  padding-right: 10px;
+}
+
+.el-button + .el-button {
+  margin-left: 5px;
 }
 </style>
