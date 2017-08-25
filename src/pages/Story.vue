@@ -71,7 +71,7 @@ export default {
         confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
       }).then((action) => {
-        if (!action === 'confim') return;
+        if (!action === 'confirm') return;
         if (!this.description) this.$message.error('The description field is required');
         const formData = new FormData();
         formData.append('asset', this.file.raw);
@@ -122,7 +122,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 h1 {
   padding-right: 10px;
 }
@@ -141,5 +141,38 @@ header a {
   margin: 10px 0 0 20px;
   /* 3 items per row, - margin - border */
   width: calc(50% - 20px - 2px);
+}
+
+asset-upload .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.asset-upload .el-upload:hover {
+  border-color: #20a0ff;
+}
+
+.asset-upload-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+  border: 1px dashed #20a0ff;
+  margin-bottom: 15px;
+}
+
+.asset {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
+.asset-upload {
+  text-align: center;
 }
 </style>

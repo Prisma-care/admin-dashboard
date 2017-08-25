@@ -27,6 +27,7 @@
 <script>
 import * as api from '@/api/';
 import arrayBufferToDataUrl from '@/helpers/image';
+import AssetUploadModal from '@/components/story/AssetUploadModal';
 
 export default {
   props: ['story', 'albumId'],
@@ -34,7 +35,8 @@ export default {
     return {
       cover: null,
       lastDescription: '',
-      description: ''
+      description: '',
+      fileToUpload: null
     };
   },
   mounted() {
@@ -57,8 +59,36 @@ export default {
     handleCommand(method, ...args) {
       this[method](args);
     },
+    setFile(file) {
+      this.fileToUpload = file;
+    },
     replaceImage() {
-      console.log('replacing');
+      const msgboxOptions = {
+        title: 'Replace image',
+        message: this.$createElement(AssetUploadModal, {
+          on: { 'file-chosen': this.setFile }
+        }),
+        showCancelButton: true,
+        confirmButtonText: 'Replace'
+      };
+      this.$msgbox(msgboxOptions).then((action) => {
+        if (!action === 'confirm') return;
+        if (!this.fileToUpload) this.$message.error('Please choose an image to upload');
+        const formData = new FormData();
+        formData.append('asset', this.fileToUpload.raw);
+        api.addAssetToStory(this.albumId, this.story.id, formData)
+          .then((res) => {
+            this.$message.success('Image replaced successfully');
+            return api.getProtectedImage(res.data.meta.location);
+          })
+          .then((response) => {
+            const type = response.headers['content-type'];
+            this.cover = arrayBufferToDataUrl(response.data, type);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }).catch(() => {});
     },
     cancelEdits() {
       this.description = this.lastDescription;
@@ -133,7 +163,7 @@ div.actions {
   position: absolute;
   padding: 7px;
   border-radius: 5px 5px 0 0;
-  top: -25px;
+  top: -30px;
   right: 0;
 }
 

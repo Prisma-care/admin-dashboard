@@ -1,34 +1,23 @@
-<template lang="html">
-  <div>
-    <el-upload
-      class="asset-upload"
-      action=""
-      :auto-upload="false"
-      :show-file-list="false"
-      :on-change="beforeAssetUpload">
-      <img v-if="preview" :src="preview" class="asset">
-      <i v-else class="el-icon-plus asset-upload-icon"></i>
-    </el-upload>
-    <el-input
-      type="textarea" @change="setDescription"
-      autosize placeholder="Story description" v-model="description">
-    </el-input>
-  </div>
+<template>
+  <el-upload
+    class="asset-upload"
+    action=""
+    :auto-upload="false"
+    :show-file-list="false"
+    :on-change="beforeAssetUpload">
+    <img v-if="preview" :src="preview" class="asset">
+    <i v-else class="el-icon-plus asset-upload-icon"></i>
+  </el-upload>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      description: '',
-      file: null,
       preview: null
     };
   },
   methods: {
-    setDescription() {
-      if (this.description) { this.$emit('description-updated', this.description); }
-    },
     beforeAssetUpload(file) {
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
       const isImage = allowedTypes.indexOf(file.raw.type) > -1;
