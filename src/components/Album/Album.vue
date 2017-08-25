@@ -42,6 +42,7 @@ export default {
     };
   },
   mounted() {
+    if (!this.album.heritage[0]) return;
     const coverSource = this.album.heritage[0].asset_name;
     if (!coverSource) return;
     api.getProtectedImage(coverSource).then((response) => {
@@ -79,7 +80,11 @@ export default {
         this.confirmingRemoval = true;
         return;
       }
-      setTimeout(() => { this.confirmingRemoval = false; }, 200);
+      api.deleteDefaultAlbum(this.album.id).then(() => {
+        this.$emit('delete-album', this.album);
+      }).catch((err) => {
+        console.log(err);
+      });
     }
   }
 };

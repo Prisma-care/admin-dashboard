@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Album v-for="album in albums" :key="album.id" :album="album" class="album">
+    <Album v-for="(album, index) in albums" :key="album.id" :album="album" class="album" v-on:delete-album="removeAlbum(index)">
       {{ album.title }}
     </Album>
   </div>
@@ -24,6 +24,16 @@ export default {
     }).catch((err) => {
       console.log(err);
     });
+  },
+  methods: {
+    removeAlbum(index) {
+      this.$message({
+        showClose: true,
+        message: `Album "${this.albums[index].title}" deleted`,
+        type: 'success'
+      });
+      this.albums.splice(index, 1);
+    }
   }
 };
 </script>
