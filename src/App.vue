@@ -57,7 +57,7 @@ h1.logo {
 }
 
 .container {
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
 }
 
