@@ -2,7 +2,7 @@
   <div class="container">
     <header>
       <h1 class="logo">Default albums</h1>
-      <el-button class="add-album" @click="addAlbum">Add album</el-button>
+      <el-button class="button" @click="addAlbum">Add album</el-button>
     </header>
     <div class="album-container">
       <div v-if="ftue" class="ftue">
@@ -65,19 +65,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  width: 70%;
-  margin: 0 auto;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-left: 20px;
-  height: 80px;
-}
-
 .album-container {
   display: flex;
   flex-wrap: wrap;
@@ -90,13 +77,6 @@ header {
 
 .ftue button {
   font-size: 16px;
-}
-
-.add-album {
-  color: #20a0ff;
-  border-color: #20a0ff;
-  font-weight: bold;
-  height: 50%;
 }
 
 .album {

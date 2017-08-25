@@ -56,6 +56,26 @@ h1.logo {
   display: inline-block;
 }
 
+.container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px;
+  height: 80px;
+}
+
+.button {
+  color: #20a0ff;
+  border-color: #20a0ff;
+  font-weight: bold;
+  height: 50%;
+}
+
 .clearfix:before,
 .clearfix:after {
   display: table;
