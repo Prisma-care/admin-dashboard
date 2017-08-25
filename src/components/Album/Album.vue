@@ -1,39 +1,30 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
-    <div class="asset-preview">
-      <img v-if="this.cover" :src="this.cover">
-      <div v-if="!this.cover">No image to show</div>
-      <el-badge :value="heritageAmount"></el-badge>
-    </div>
+    <router-link :to="{ name: 'story', params: { id: album.id } }">
+      <div class="asset-preview">
+        <img v-if="this.cover" :src="this.cover">
+        <div v-if="!this.cover" class="no-image">No image to show</div>
+        <el-badge :value="heritageAmount"></el-badge>
+      </div>
+    </router-link>
     <div class="album-info bottom clearfix">
-      <h2><slot></slot></h2>
-      <el-dropdown @command="handleCommand" :hide-on-click="confirmingRemoval">
-        <span class="el-dropdown-link">
-          <i class="el-icon-caret-bottom el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="renameAlbum">
-            <i class="el-icon-edit"></i>
-            <span>Rename</span>
-          </el-dropdown-item>
-          <el-dropdown-item :class="{ 'danger': confirmingRemoval }" command="removeAlbum">
-            <i class="el-icon-delete"></i>
-            <span v-if="!confirmingRemoval">Remove</span>
-            <span v-else>Sure?</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <router-link :to="{ name: 'story', params: { id: album.id } }">
+        <h2><slot></slot></h2>
+      </router-link>
+      <RenameRemoveDropdown @rename="renameAlbum" @remove="removeAlbum" :confirming-removal="confirmingRemoval"></RenameRemoveDropdown>
     </div>
   </el-card>
 </template>
 
 <script>
 import * as api from '@/api/';
+import RenameRemoveDropdown from '@/components/RenameRemoveDropdown';
 import arrayBufferToDataUrl from '@/helpers/image';
 
 export default {
   name: 'album-card',
   props: ['album'],
+  components: { RenameRemoveDropdown },
   data() {
     return {
       cover: null,
@@ -54,9 +45,6 @@ export default {
     this.heritageAmount = this.album.heritage.length;
   },
   methods: {
-    handleCommand(method, ...args) {
-      this[method](args);
-    },
     renameAlbum() {
       this.$prompt('Name', `Rename album "${this.album.title}"`, {
         confirmButtonText: 'Rename',
@@ -99,6 +87,18 @@ export default {
 .asset-preview {
   padding: 0;
   position: relative;
+  height: 180px;
+}
+
+.asset-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.album a {
+  text-decoration: none;
+  color: inherit;
 }
 
 img {
@@ -125,19 +125,5 @@ h2 {
 .el-dropdown {
   margin-top: 14px; /* padding/2 + line-height/2 */
   float: right;
-}
-
-.el-dropdown-menu i {
-  color: #20a0ff;
-  padding-right: 8px;
-}
-
-.el-dropdown-menu .danger i, .danger {
-  color: #ff4949;
-}
-
-.el-dropdown-menu span {
-  display: inline-block;
-  padding-right: 10px;
 }
 </style>

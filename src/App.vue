@@ -56,6 +56,35 @@ h1.logo {
   display: inline-block;
 }
 
+.container {
+  width: 60%;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px;
+  height: 80px;
+}
+
+.ftue {
+  width: 100%;
+  text-align: center;
+}
+
+.ftue button {
+  font-size: 16px;
+}
+
+.button {
+  color: #20a0ff;
+  border-color: #20a0ff;
+  font-weight: bold;
+  height: 50%;
+}
+
 .clearfix:before,
 .clearfix:after {
   display: table;
