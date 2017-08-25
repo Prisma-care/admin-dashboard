@@ -13,15 +13,17 @@
 <script>
 import * as api from '@/api/';
 import RenameRemoveDropdown from '@/components/RenameRemoveDropdown';
-import CreateStoryModal from '@/components/Story/CreateStoryModal';
+import CreateStoryModalContent from '@/components/Story/CreateStoryModalContent';
 
 export default {
-  components: { RenameRemoveDropdown, CreateStoryModal },
+  components: { RenameRemoveDropdown, CreateStoryModalContent },
   data() {
     return {
       album: null,
       loading: true,
-      confirmingRemoval: false
+      confirmingRemoval: false,
+      description: '',
+      file: null
     };
   },
   mounted() {
@@ -33,16 +35,42 @@ export default {
     });
   },
   methods: {
+    setDescription(description) {
+      this.description = description;
+    },
+    setFile(file) {
+      this.file = file;
+    },
     addStory() {
       const h = this.$createElement;
       this.$msgbox({
         title: `Create new story to add to "${this.album.title}"`,
-        message: h(CreateStoryModal),
+        message: h(CreateStoryModalContent, {
+          on: {
+            'description-updated': this.setDescription,
+            'file-chosen': this.setFile
+          }
+        }),
         showCancelButton: true,
-        confirmButtonText: 'OK',
+        confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
       }).then((action) => {
-        console.log(action);
+        if (!action === 'confim') return;
+        if (!this.description) this.$message.error('The description field is required');
+        const formData = new FormData();
+        formData.append('asset', this.file.raw);
+        api.addStory(this.album.id, this.description)
+          .then((res) => {
+            this.album.heritage.push(res.data.response);
+            return api.addAssetToStory(this.album.id, res.data.response.id, formData);
+          })
+          .then((res) => {
+            const amountOfHeritage = this.album.heritage.length;
+            this.album.heritage[amountOfHeritage - 1].asset_name = res.data.meta.location;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }).catch(() => {});
     },
     renameAlbum() {

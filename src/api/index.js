@@ -6,4 +6,15 @@ export const addDefaultAlbum = title => Vue.axios.post('album', { title });
 export const renameDefaultAlbum = (id, name) => Vue.axios.patch(`album/${id}`, { title: name });
 export const deleteDefaultAlbum = id => Vue.axios.delete(`album/${id}`);
 
+export const addStory = (albumId, description) => (
+  Vue.axios.post(`album/${albumId}/heritage`, { description })
+);
+export const addAssetToStory = (albumId, heritageId, asset) => (
+  Vue.axios.post(`album/${albumId}/heritage/${heritageId}/asset`, asset, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+);
+
 export const getProtectedImage = src => Vue.axios.get(src, { responseType: 'arraybuffer' });
