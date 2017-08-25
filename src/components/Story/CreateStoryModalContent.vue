@@ -47,26 +47,35 @@ export default {
 
 <style scoped>
 asset-upload .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .asset-upload .el-upload:hover {
-    border-color: #20a0ff;
-  }
-  .asset-upload-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .asset {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.asset-upload .el-upload:hover {
+  border-color: #20a0ff;
+}
+
+.asset-upload-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+  border: 1px dashed #20a0ff;
+  margin-bottom: 15px;
+}
+
+.asset {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
+.asset-upload {
+  text-align: center;
+}
 </style>

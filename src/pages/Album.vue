@@ -19,7 +19,7 @@
 
 <script>
 import * as api from '@/api/';
-import Album from '@/components/Album/Album';
+import Album from '@/components/album/Album';
 
 export default {
   name: 'album-overview',
@@ -68,15 +68,6 @@ export default {
 .album-container {
   display: flex;
   flex-wrap: wrap;
-}
-
-.ftue {
-  width: 100%;
-  text-align: center;
-}
-
-.ftue button {
-  font-size: 16px;
 }
 
 .album {

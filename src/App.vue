@@ -69,6 +69,15 @@ header {
   height: 80px;
 }
 
+.ftue {
+  width: 100%;
+  text-align: center;
+}
+
+.ftue button {
+  font-size: 16px;
+}
+
 .button {
   color: #20a0ff;
   border-color: #20a0ff;

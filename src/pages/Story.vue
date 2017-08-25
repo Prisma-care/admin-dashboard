@@ -7,28 +7,39 @@
       </div>
       <el-button class="button" @click="addStory">Add story</el-button>
     </header>
+    <div v-if="ftue" class="ftue">
+      <p>
+        No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
+      </p>
+    </div>
+    <Story v-else v-for="(story, index) in stories" :key="album.id" :album="album" class="album" v-on:delete-album="removeAlbum(index)">
+      {{ album.title }}
+    </Story>
   </div>
 </template>
 
 <script>
 import * as api from '@/api/';
+import Story from '@/components/story/Story';
 import RenameRemoveDropdown from '@/components/RenameRemoveDropdown';
-import CreateStoryModalContent from '@/components/Story/CreateStoryModalContent';
+import CreateStoryModalContent from '@/components/story/CreateStoryModalContent';
 
 export default {
-  components: { RenameRemoveDropdown, CreateStoryModalContent },
+  components: { Story, RenameRemoveDropdown, CreateStoryModalContent },
   data() {
     return {
       album: null,
       loading: true,
       confirmingRemoval: false,
       description: '',
-      file: null
+      file: null,
+      ftue: false
     };
   },
   mounted() {
     api.getDefaultAlbum(this.$route.params.id).then((res) => {
       this.album = res.data.response;
+      if (!this.album.heritage.length) this.ftue = true;
       this.loading = false;
     }).catch((err) => {
       console.log(err);
@@ -44,7 +55,7 @@ export default {
     addStory() {
       const h = this.$createElement;
       this.$msgbox({
-        title: `Create new story to add to "${this.album.title}"`,
+        title: `Add a new story to "${this.album.title}"`,
         message: h(CreateStoryModalContent, {
           on: {
             'description-updated': this.setDescription,
