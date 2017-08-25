@@ -31,8 +31,8 @@ export default {
     };
   },
   mounted() {
-    api.getDefaultAlbums().then(() => {
-      this.albums = [];
+    api.getDefaultAlbums().then((res) => {
+      this.albums = res.data.response;
       if (!this.albums.length) this.ftue = true;
     }).catch((err) => {
       console.log(err);
@@ -48,7 +48,17 @@ export default {
       this.albums.splice(index, 1);
     },
     addAlbum() {
-      console.log('adding');
+      this.$prompt('Name', 'Add new default album', {
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel',
+      }).then((confirmed) => {
+        const title = confirmed.value;
+        api.addDefaultAlbum(title).then((res) => {
+          this.albums.push(res.data.response);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }).catch(() => {});
     }
   }
 };
