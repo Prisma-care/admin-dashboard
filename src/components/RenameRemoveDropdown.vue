@@ -34,12 +34,7 @@ export default {
 };
 </script>
 
-<style lang="css">
-.el-dropdown {
-  margin-top: 14px; /* padding/2 + line-height/2 */
-  float: right;
-}
-
+<style scoped>
 .el-dropdown-menu i {
   color: #20a0ff;
   padding-right: 8px;

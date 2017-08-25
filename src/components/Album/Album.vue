@@ -121,4 +121,9 @@ h2 {
   font-size: 1.1rem;
   float: left;
 }
+
+.el-dropdown {
+  margin-top: 14px; /* padding/2 + line-height/2 */
+  float: right;
+}
 </style>
