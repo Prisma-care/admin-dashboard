@@ -15,7 +15,7 @@
           No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
         </p>
       </div>
-      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" class="story" v-on:delete-album="removeStory(index)">
+      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" v-on:delete-album="removeStory(index)">
         {{ story.description }}
       </Story>
     </div>
