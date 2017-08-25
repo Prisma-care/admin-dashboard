@@ -5,7 +5,10 @@
       <div v-if="!this.cover" class="no-image">No image to show</div>
     </div>
     <div class="story-info bottom clearfix">
-      <h2><slot></slot></h2>
+      <el-input
+        type="textarea" @change="setDescription"
+        autosize placeholder="Story description" v-model="description">
+      </el-input>
     </div>
   </el-card>
 </template>
@@ -18,10 +21,12 @@ export default {
   props: ['story'],
   data() {
     return {
-      cover: null
+      cover: null,
+      description: ''
     };
   },
   mounted() {
+    this.description = this.story.description;
     const coverSource = this.story.asset_name;
     if (!coverSource) return;
     api.getProtectedImage(coverSource).then((response) => {

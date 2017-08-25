@@ -2,7 +2,9 @@
   <div class="container" v-loading.body="loading">
     <header>
       <div>
-        <h1 class="logo" v-if="album">{{ album.title }}</h1>
+        <router-link :to="{ name: 'album' }">
+          <h1 class="logo" v-if="album">{{ album.title }}</h1>
+        </router-link>
         <RenameRemoveDropdown @rename="renameAlbum" @remove="removeAlbum" :confirming-removal="confirmingRemoval"></RenameRemoveDropdown>
       </div>
       <el-button class="button" @click="addStory">Add story</el-button>
@@ -127,6 +129,10 @@ h1 {
   padding-right: 10px;
 }
 
+header a {
+  color: inherit!important;
+}
+
 .story-container {
   display: flex;
   flex-wrap: wrap;
@@ -136,6 +142,6 @@ h1 {
   flex-grow: 1;
   margin: 10px 0 0 20px;
   /* 3 items per row, - margin - border */
-  width: calc(100% * (1/3) - 20px - 2px);
+  width: calc(50% - 20px - 2px);
 }
 </style>
