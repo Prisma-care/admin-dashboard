@@ -13,9 +13,10 @@
 <script>
 import * as api from '@/api/';
 import RenameRemoveDropdown from '@/components/RenameRemoveDropdown';
+import CreateStoryModal from '@/components/Story/CreateStoryModal';
 
 export default {
-  components: { RenameRemoveDropdown },
+  components: { RenameRemoveDropdown, CreateStoryModal },
   data() {
     return {
       album: null,
@@ -33,7 +34,16 @@ export default {
   },
   methods: {
     addStory() {
-      // add a story
+      const h = this.$createElement;
+      this.$msgbox({
+        title: `Create new story to add to "${this.album.title}"`,
+        message: h(CreateStoryModal),
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel'
+      }).then((action) => {
+        console.log(action);
+      }).catch(() => {});
     },
     renameAlbum() {
       this.$prompt('Name', `Rename album "${this.album.title}"`, {
