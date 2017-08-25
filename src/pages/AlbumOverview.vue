@@ -2,10 +2,15 @@
   <div class="container">
     <header>
       <h1 class="logo">Default albums</h1>
-      <el-button class="add-album">Add album</el-button>
+      <el-button class="add-album" @click="addAlbum">Add album</el-button>
     </header>
     <div class="album-container">
-      <Album v-for="(album, index) in albums" :key="album.id" :album="album" class="album" v-on:delete-album="removeAlbum(index)">
+      <div v-if="ftue" class="ftue">
+        <p>
+          No default albums have been created yet. Start by <el-button type="text" @click="addAlbum">adding one now</el-button>.
+        </p>
+      </div>
+      <Album v-else v-for="(album, index) in albums" :key="album.id" :album="album" class="album" v-on:delete-album="removeAlbum(index)">
         {{ album.title }}
       </Album>
     </div>
@@ -21,12 +26,14 @@ export default {
   components: { Album },
   data() {
     return {
-      albums: []
+      albums: [],
+      ftue: false
     };
   },
   mounted() {
-    api.getDefaultAlbums().then((res) => {
-      this.albums = res.data.response;
+    api.getDefaultAlbums().then(() => {
+      this.albums = [];
+      if (!this.albums.length) this.ftue = true;
     }).catch((err) => {
       console.log(err);
     });
@@ -39,6 +46,9 @@ export default {
         type: 'success'
       });
       this.albums.splice(index, 1);
+    },
+    addAlbum() {
+      console.log('adding');
     }
   }
 };
@@ -61,6 +71,15 @@ header {
 .album-container {
   display: flex;
   flex-wrap: wrap;
+}
+
+.ftue {
+  width: 100%;
+  text-align: center;
+}
+
+.ftue button {
+  font-size: 16px;
 }
 
 .add-album {
