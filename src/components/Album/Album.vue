@@ -1,10 +1,12 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
-    <div class="asset-preview">
-      <img v-if="this.cover" :src="this.cover">
-      <div v-if="!this.cover">No image to show</div>
-      <el-badge :value="heritageAmount"></el-badge>
-    </div>
+    <router-link :to="{ name: 'heritage', params: { id: album.id } }">
+      <div class="asset-preview">
+        <img v-if="this.cover" :src="this.cover">
+        <div v-if="!this.cover" class="no-image">No image to show</div>
+        <el-badge :value="heritageAmount"></el-badge>
+      </div>
+    </router-link>
     <div class="album-info bottom clearfix">
       <h2><slot></slot></h2>
       <el-dropdown @command="handleCommand" :hide-on-click="confirmingRemoval">
@@ -100,6 +102,17 @@ export default {
   padding: 0;
   position: relative;
   height: 180px;
+}
+
+.asset-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.album a {
+  text-decoration: none;
+  color: inherit;
 }
 
 img {
