@@ -99,6 +99,7 @@ export default {
 .asset-preview {
   padding: 0;
   position: relative;
+  height: 180px;
 }
 
 img {
