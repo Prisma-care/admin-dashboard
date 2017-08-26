@@ -15,7 +15,7 @@
           No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
         </p>
       </div>
-      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" v-on:delete-album="removeStory(index)" @loading-stopped="loading = false">
+      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" @story-deleted="removeStory(index)" @loading-stopped="loading = false">
         {{ story.description }}
       </Story>
     </div>
@@ -52,9 +52,6 @@ export default {
     });
   },
   methods: {
-    removeStory() {
-      //
-    },
     setDescription(description) {
       this.description = description;
     },
@@ -121,6 +118,10 @@ export default {
       }).catch((err) => {
         console.log(err);
       });
+    },
+    removeStory(index) {
+      this.$message.success('The story has been deleted');
+      this.album.heritage.splice(index, 1);
     }
   }
 };

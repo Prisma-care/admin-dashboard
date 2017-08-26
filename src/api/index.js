@@ -9,6 +9,9 @@ export const deleteDefaultAlbum = id => Vue.axios.delete(`album/${id}`);
 export const addStory = (albumId, description) => (
   Vue.axios.post(`album/${albumId}/heritage`, { description })
 );
+
+export const deleteStory = (albumId, storyId) => Vue.axios.delete(`album/${albumId}/heritage/${storyId}`);
+
 export const addAssetToStory = (albumId, storyId, asset) => (
   Vue.axios.post(`album/${albumId}/heritage/${storyId}/asset`, asset, {
     headers: {
@@ -16,6 +19,7 @@ export const addAssetToStory = (albumId, storyId, asset) => (
     }
   })
 );
+
 export const updateStoryDescription = (albumId, storyId, description) => (
   Vue.axios.patch(`album/${albumId}/heritage/${storyId}`, { description })
 );
