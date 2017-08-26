@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import * as api from '../api/';
-import Album from '../components/album/Album';
+import * as api from '@/api/';
+import Album from '@/components/album/Album';
 
 export default {
   name: 'album-overview',

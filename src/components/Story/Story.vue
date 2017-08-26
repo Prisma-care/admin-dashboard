@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import * as api from '../../api/';
-import arrayBufferToDataUrl from '../../helpers/image';
+import * as api from '@/api/';
+import arrayBufferToDataUrl from '@/helpers/image';
 import AssetUploadModal from './AssetUploadModal';
 
 export default {
