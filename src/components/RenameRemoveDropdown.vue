@@ -34,14 +34,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .el-dropdown-menu i {
   color: #20a0ff;
   padding-right: 8px;
 }
 
 .el-dropdown-menu .danger i, .danger {
-  color: #ff4949;
+  color: #ff4949!important;
 }
 
 .el-dropdown-menu span {
