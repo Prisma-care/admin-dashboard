@@ -7,8 +7,7 @@
       <el-input placeholder="Email" v-model="email"></el-input>
       <el-input placeholder="Password" v-model="password"></el-input>
       <el-button type="primary" @click="login">Log in</el-button>
-      <!-- <button @click="login" v-if="!$auth.check()">Login</button>
-      <button @click="$auth.logout()" v-if="$auth.check()">Logout</button> -->
+      <!-- <button @click="login" v-if="!$auth.check()">Login</button> -->
     </div>
   </div>
 </template>

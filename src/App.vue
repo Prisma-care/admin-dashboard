@@ -1,5 +1,6 @@
 <template>
   <div id="app" v-if="$auth.ready()">
+    <el-button @click="$auth.logout()" v-if="$auth.check()" type="text" class="logout">Logout</el-button>
     <router-view></router-view>
   </div>
 </template>
@@ -47,6 +48,12 @@ header {
   justify-content: space-between;
   margin-left: 20px;
   height: 80px;
+}
+
+.logout {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .ftue {
