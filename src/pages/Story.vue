@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import * as api from '@/api/';
-import Story from '@/components/story/Story';
-import RenameRemoveDropdown from '@/components/RenameRemoveDropdown';
-import CreateStoryModalContent from '@/components/story/CreateStoryModalContent';
+import * as api from '../api/';
+import Story from '../components/story/Story';
+import RenameRemoveDropdown from '../components/RenameRemoveDropdown';
+import CreateStoryModalContent from '../components/story/CreateStoryModalContent';
 
 export default {
   components: { Story, RenameRemoveDropdown, CreateStoryModalContent },
