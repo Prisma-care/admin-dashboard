@@ -5,12 +5,17 @@
       <div v-if="!this.cover" class="no-image">No image to show</div>
     </div>
     <div class="story-info bottom clearfix">
-      <el-dropdown @command="handleCommand">
+      <el-dropdown @command="handleCommand" :hide-on-click="confirmingRemoval">
         <span class="el-dropdown-link"><i class="el-icon-caret-bottom el-icon--right"></i></span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="replaceImage">
             <i class="el-icon-picture"></i>
             <span>Replace image</span>
+          </el-dropdown-item>
+          <el-dropdown-item :class="{ 'danger': confirmingRemoval }" command="removeStory">
+            <i class="el-icon-delete"></i>
+            <span v-if="!confirmingRemoval">Remove</span>
+            <span v-else>Sure?</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -36,7 +41,8 @@ export default {
       cover: null,
       lastDescription: '',
       description: '',
-      fileToUpload: null
+      fileToUpload: null,
+      confirmingRemoval: false
     };
   },
   mounted() {
@@ -101,6 +107,17 @@ export default {
          }).catch((err) => {
            console.log(err);
          });
+    },
+    removeStory() {
+      if (!this.confirmingRemoval) {
+        this.confirmingRemoval = true;
+        return;
+      }
+      api.deleteStory(this.albumId, this.story.id).then(() => {
+        this.$emit('story-deleted', this.story);
+      }).catch((err) => {
+        console.log(err);
+      });
     }
   }
 };
