@@ -12,7 +12,6 @@ import VueAuth from '@websanova/vue-auth';
 
 import App from './App';
 import router from './router';
-import LOCAL_API_URL from './env';
 
 Vue.config.env = process.env.NODE_ENV;
 
@@ -21,7 +20,7 @@ Vue.config.productionTip = false;
 
 Vue.router = router;
 Vue.use(VueAxios, axios);
-Vue.axios.defaults.baseURL = (Vue.config.env === 'production') ? 'https://api.prisma.care/v1' : LOCAL_API_URL;
+Vue.axios.defaults.baseURL = (Vue.config.env === 'production') ? 'https://api.prisma.care/v1' : process.env.PRISMA_API_URL;
 
 /* eslint global-require: "off" */
 Vue.use(VueAuth, {
