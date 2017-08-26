@@ -1,31 +1,12 @@
 <template>
   <div id="app" v-if="$auth.ready()">
-    <button @click="login" v-if="!$auth.check()">Login</button>
-    <button @click="$auth.logout()" v-if="$auth.check()">Logout</button>
+    <el-button @click="$auth.logout()" v-if="$auth.check()" type="text" class="logout">Logout</el-button>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
-  data() {
-    return {
-      email: 'dummy@local.com',
-      password: 'qwerty'
-    };
-  },
-  methods: {
-    login() {
-      this.$auth.login({
-        data: { email: this.email, password: this.password },
-        rememberMe: true,
-        error: (res) => {
-          console.log(res.data);
-        },
-      });
-    }
-  }
 };
 </script>
 
@@ -67,6 +48,12 @@ header {
   justify-content: space-between;
   margin-left: 20px;
   height: 80px;
+}
+
+.logout {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .ftue {
