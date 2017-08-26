@@ -111,15 +111,10 @@ export default {
     removeStory() {
       if (!this.confirmingRemoval) {
         this.confirmingRemoval = true;
-        api.deleteDefaultAlbum(this.album.id).then(() => {
-          this.$router.push('/');
-        }).catch((err) => {
-          console.log(err);
-        });
+        return;
       }
       api.deleteStory(this.albumId, this.story.id).then(() => {
-        this.$message.success('The story was deleted');
-        this.albums.splice(this.story, 1);
+        this.$emit('story-deleted', this.story);
       }).catch((err) => {
         console.log(err);
       });

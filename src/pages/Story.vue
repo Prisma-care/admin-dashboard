@@ -120,8 +120,11 @@ export default {
       });
     },
     removeStory(index) {
-      this.$message.success('The story has been deleted');
       this.album.heritage.splice(index, 1);
+      this.$message.success('The story has been deleted');
+      if (!this.album.heritage.length) {
+        this.ftue = true;
+      }
     }
   }
 };
