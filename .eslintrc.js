@@ -34,6 +34,9 @@ module.exports = {
       'optionalDependencies': ['test/unit/index.js']
     }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'comma-dangle': 0,
+    // TODO re-enable after initial development
+    'no-console': 0,
   }
 }
