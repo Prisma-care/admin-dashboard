@@ -22,9 +22,6 @@ Vue.router = router;
 Vue.use(VueAxios, axios);
 Vue.axios.defaults.baseURL = (Vue.config.env === 'production') ? 'https://api.prisma.care/v1' : process.env.PRISMA_API_URL;
 
-console.log(process.env);
-console.log(process.env.PRISMA_API_URL);
-
 /* eslint global-require: "off" */
 Vue.use(VueAuth, {
   auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),

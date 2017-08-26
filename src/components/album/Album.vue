@@ -33,7 +33,7 @@ export default {
     };
   },
   mounted() {
-    if (!this.album.heritage[0]) return;
+    if (!this.album.heritage || !this.album.heritage[0]) return;
     const coverSource = this.album.heritage[0].asset_name;
     if (!coverSource) return;
     api.getProtectedImage(coverSource).then((response) => {
