@@ -86,6 +86,7 @@ export default {
           .then((res) => {
             const amountOfHeritage = this.album.heritage.length;
             this.album.heritage[amountOfHeritage - 1].asset_name = res.data.meta.location;
+            this.ftue = false;
           })
           .catch((err) => {
             console.log(err);
