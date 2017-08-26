@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 
-import dotenv from 'dotenv';
 import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/en';
 import 'element-ui/lib/theme-default/index.css';
@@ -14,7 +13,6 @@ import VueAuth from '@websanova/vue-auth';
 import App from './App';
 import router from './router';
 
-dotenv.config();
 Vue.config.env = process.env.NODE_ENV;
 
 Vue.use(ElementUI, { locale });
@@ -23,6 +21,9 @@ Vue.config.productionTip = false;
 Vue.router = router;
 Vue.use(VueAxios, axios);
 Vue.axios.defaults.baseURL = (Vue.config.env === 'production') ? 'https://api.prisma.care/v1' : process.env.PRISMA_API_URL;
+
+console.log(process.env);
+console.log(process.env.PRISMA_API_URL);
 
 /* eslint global-require: "off" */
 Vue.use(VueAuth, {
