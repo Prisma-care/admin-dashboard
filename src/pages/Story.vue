@@ -7,7 +7,21 @@
         </router-link>
         <RenameRemoveDropdown @rename="renameAlbum" @remove="removeAlbum" :confirming-removal="confirmingRemoval"></RenameRemoveDropdown>
       </div>
-      <el-button class="button" @click="addStory">Add story</el-button>
+      <el-dropdown @command="handleDropdownCommand">
+        <el-button class="button">
+          Add Story <i class="el-icon-caret-bottom el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="addImageStory">
+            <i class="el-icon-picture"></i>
+            <span>Image</span>
+          </el-dropdown-item>
+          <el-dropdown-item command="addYoutubeStory">
+            <i class="el-icon-picture"></i>
+            <span>Youtube</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </header>
     <div class="story-container">
       <div v-if="ftue" class="ftue">
@@ -52,13 +66,16 @@ export default {
     });
   },
   methods: {
+    handleDropdownCommand(method, ...args) {
+      this[method](args);
+    },
     setDescription(description) {
       this.description = description;
     },
     setFile(file) {
       this.file = file;
     },
-    addStory() {
+    addImageStory() {
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
         message: this.$createElement(CreateStoryModalContent, {
@@ -78,7 +95,7 @@ export default {
         api.addStory(this.album.id, this.description)
           .then((res) => {
             this.album.heritage.push(res.data.response);
-            return api.addAssetToStory(this.album.id, res.data.response.id, formData);
+            return api.addImageAssetToStory(this.album.id, res.data.response.id, formData);
           })
           .then((res) => {
             const amountOfHeritage = this.album.heritage.length;

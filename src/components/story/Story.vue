@@ -82,7 +82,7 @@ export default {
         if (!this.fileToUpload) this.$message.error('Please choose an image to upload');
         const formData = new FormData();
         formData.append('asset', this.fileToUpload.raw);
-        api.addAssetToStory(this.albumId, this.story.id, formData)
+        api.addImageAssetToStory(this.albumId, this.story.id, formData)
           .then((res) => {
             this.$message.success('Image replaced successfully');
             return api.getProtectedImage(res.data.meta.location);
