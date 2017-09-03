@@ -40,10 +40,13 @@
 import * as api from '@/api/';
 import Story from '@/components/story/Story';
 import RenameRemoveDropdown from '@/components/RenameRemoveDropdown';
-import CreateStoryModalContent from '@/components/story/CreateStoryModalContent';
+import CreateImageStoryModalContent from '@/components/story/CreateImageStoryModalContent';
+import CreateYoutubeStoryModalContent from '@/components/story/CreateYoutubeStoryModalContent';
 
 export default {
-  components: { Story, RenameRemoveDropdown, CreateStoryModalContent },
+  components: {
+    Story, RenameRemoveDropdown, CreateImageStoryModalContent, CreateYoutubeStoryModalContent
+  },
   data() {
     return {
       album: null,
@@ -51,7 +54,8 @@ export default {
       confirmingRemoval: false,
       description: '',
       file: null,
-      ftue: false
+      ftue: false,
+      storyUrl: ''
     };
   },
   mounted() {
@@ -75,13 +79,45 @@ export default {
     setFile(file) {
       this.file = file;
     },
-    addYoutubeStory() {
-      //
+    setUrl(url) {
+      this.storyUrl = url;
     },
-    addImageStory() {
+    addYoutubeStory() {
+      this.description = '';
+      this.url = '';
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
-        message: this.$createElement(CreateStoryModalContent, {
+        message: this.$createElement(CreateImageStoryModalContent, {
+          on: {
+            'description-updated': this.setDescription,
+            'url-updated': this.setUrl
+          }
+        }),
+        showCancelButton: true,
+        confirmButtonText: 'Add Story',
+        cancelButtonText: 'Cancel'
+      }).then((url) => {
+        api.addStory(this.album.id, this.description)
+          .then((res) => {
+            this.album.heritage.push(res.data.response);
+            return api.addYoutubeAssetToStory(this.album.id, res.data.response.id, url);
+          })
+          .then(() => {
+            // const amountOfHeritage = this.album.heritage.length;
+            // this.album.heritage[amountOfHeritage - 1].asset_name = res.data.meta.location;
+            this.ftue = false;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }).catch(() => {});
+    },
+    addImageStory() {
+      this.description = '';
+      this.file = null;
+      this.$msgbox({
+        title: `Add a new story to "${this.album.title}"`,
+        message: this.$createElement(CreateImageStoryModalContent, {
           on: {
             'description-updated': this.setDescription,
             'file-chosen': this.setFile
