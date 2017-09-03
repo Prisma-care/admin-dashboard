@@ -1,8 +1,9 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
     <div class="asset-preview">
-      <img v-if="this.cover" :src="this.cover">
-      <div v-if="!this.cover" class="no-image">No image to show</div>
+      <img v-if="cover" :src="cover">
+      <iframe class="video" v-if="videoUrl" :src="videoUrl"></iframe>
+      <div v-if="!cover && !videoUrl" class="no-image">No image to show</div>
     </div>
     <div class="story-info bottom clearfix">
       <el-dropdown @command="handleCommand" :hide-on-click="confirmingRemoval">
@@ -42,12 +43,19 @@ export default {
       lastDescription: '',
       description: '',
       fileToUpload: null,
-      confirmingRemoval: false
+      confirmingRemoval: false,
+      videoUrl: null
     };
   },
   mounted() {
     this.lastDescription = this.story.description;
     this.description = this.story.description;
+    if (this.story.asset_type === 'youtube') {
+      const url = this.story.asset_name.replace('watch?v=', 'embed/');
+      this.videoUrl = url;
+      this.$emit('loading-stopped');
+      return;
+    }
     const coverSource = this.story.asset_name;
     if (!coverSource) {
       this.$emit('loading-stopped');
@@ -158,6 +166,12 @@ h2 {
 
 img {
   width: 100%;
+  display: block;
+}
+
+iframe {
+  border: 0;
+  height: 100%;
   display: block;
 }
 

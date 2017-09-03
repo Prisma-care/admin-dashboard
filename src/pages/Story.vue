@@ -29,7 +29,8 @@
           No have been addded to this album yet. Start by <el-button type="text" @click="addImageStory">adding a story now</el-button>.
         </p>
       </div>
-      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" @story-deleted="removeStory(index)" @loading-stopped="loading = false">
+      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story"
+             @story-deleted="removeStory(index)" @loading-stopped="loading = false">
         {{ story.description }}
       </Story>
     </div>
@@ -102,9 +103,10 @@ export default {
             this.album.heritage.push(res.data.response);
             return api.addYoutubeAssetToStory(this.album.id, res.data.response.id, this.storyUrl);
           })
-          .then(() => {
-            // const amountOfHeritage = this.album.heritage.length;
-            // this.album.heritage[amountOfHeritage - 1].asset_name = res.data.meta.location;
+          .then((res) => {
+            const heritageIndex = this.album.heritage.length - 1;
+            this.album.heritage[heritageIndex].asset_name = res.data.response.source;
+            this.album.heritage[heritageIndex].asset_type = res.data.response.type;
             this.ftue = false;
           })
           .catch((err) => {
