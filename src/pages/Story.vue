@@ -98,15 +98,16 @@ export default {
       }).then((action) => {
         if (action !== 'confirm') return;
         if (!this.storyUrl) this.$message.error('The url field is required');
+        let newStory;
         api.addStory(this.album.id, this.description)
           .then((res) => {
-            this.album.heritage.push(res.data.response);
+            newStory = res.data.response;
             return api.addYoutubeAssetToStory(this.album.id, res.data.response.id, this.storyUrl);
           })
           .then((res) => {
-            const heritageIndex = this.album.heritage.length - 1;
-            this.album.heritage[heritageIndex].asset_name = res.data.response.source;
-            this.album.heritage[heritageIndex].asset_type = res.data.response.type;
+            newStory.asset_name = res.data.response.source;
+            newStory.asset_type = res.data.response.type;
+            this.album.heritage.push(newStory);
             this.ftue = false;
           })
           .catch((err) => {
@@ -131,14 +132,15 @@ export default {
         if (!this.description) this.$message.error('The description field is required');
         const formData = new FormData();
         formData.append('asset', this.file.raw);
+        let newStory;
         api.addStory(this.album.id, this.description)
           .then((res) => {
-            this.album.heritage.push(res.data.response);
+            newStory = res.data.response;
             return api.addImageAssetToStory(this.album.id, res.data.response.id, formData);
           })
           .then((res) => {
-            const amountOfHeritage = this.album.heritage.length;
-            this.album.heritage[amountOfHeritage - 1].asset_name = res.data.meta.location;
+            newStory.asset_name = res.data.meta.location;
+            this.album.heritage.push(newStory);
             this.ftue = false;
           })
           .catch((err) => {
