@@ -83,11 +83,9 @@ export default {
       this.storyUrl = url;
     },
     addYoutubeStory() {
-      this.description = '';
-      this.url = '';
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
-        message: this.$createElement(CreateImageStoryModalContent, {
+        message: this.$createElement(CreateYoutubeStoryModalContent, {
           on: {
             'description-updated': this.setDescription,
             'url-updated': this.setUrl
@@ -96,11 +94,13 @@ export default {
         showCancelButton: true,
         confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
-      }).then((url) => {
+      }).then((action) => {
+        if (action !== 'confirm') return;
+        if (!this.url) this.$message.error('The url field is required');
         api.addStory(this.album.id, this.description)
           .then((res) => {
             this.album.heritage.push(res.data.response);
-            return api.addYoutubeAssetToStory(this.album.id, res.data.response.id, url);
+            return api.addYoutubeAssetToStory(this.album.id, res.data.response.id, this.storyUrl);
           })
           .then(() => {
             // const amountOfHeritage = this.album.heritage.length;
@@ -113,8 +113,6 @@ export default {
       }).catch(() => {});
     },
     addImageStory() {
-      this.description = '';
-      this.file = null;
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
         message: this.$createElement(CreateImageStoryModalContent, {
@@ -127,7 +125,7 @@ export default {
         confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
       }).then((action) => {
-        if (!action === 'confirm') return;
+        if (!action !== 'confirm') return;
         if (!this.description) this.$message.error('The description field is required');
         const formData = new FormData();
         formData.append('asset', this.file.raw);
