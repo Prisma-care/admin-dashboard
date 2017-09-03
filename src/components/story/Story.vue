@@ -1,16 +1,21 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
     <div class="asset-preview">
-      <img v-if="this.cover" :src="this.cover">
-      <div v-if="!this.cover" class="no-image">No image to show</div>
+      <img v-if="cover" :src="cover">
+      <iframe class="video" v-if="videoUrl" :src="videoUrl"></iframe>
+      <div v-if="!cover && !videoUrl" class="no-image">No image to show</div>
     </div>
     <div class="story-info bottom clearfix">
       <el-dropdown @command="handleCommand" :hide-on-click="confirmingRemoval">
         <span class="el-dropdown-link"><i class="el-icon-caret-bottom el-icon--right"></i></span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="replaceImage">
+          <el-dropdown-item v-if="cover" el-dropdown-item command="replaceImage">
             <i class="el-icon-picture"></i>
             <span>Replace image</span>
+          </el-dropdown-item>
+          <el-dropdown-item v-if="videoUrl" el-dropdown-item command="replaceVideo">
+            <i class="el-icon-caret-right"></i>
+            <span>Replace video</span>
           </el-dropdown-item>
           <el-dropdown-item :class="{ 'danger': confirmingRemoval }" command="removeStory">
             <i class="el-icon-delete"></i>
@@ -42,12 +47,19 @@ export default {
       lastDescription: '',
       description: '',
       fileToUpload: null,
-      confirmingRemoval: false
+      confirmingRemoval: false,
+      videoUrl: null
     };
   },
   mounted() {
     this.lastDescription = this.story.description;
     this.description = this.story.description;
+    if (this.story.asset_type === 'youtube') {
+      const url = this.story.asset_name.replace('watch?v=', 'embed/');
+      this.videoUrl = url;
+      this.$emit('loading-stopped');
+      return;
+    }
     const coverSource = this.story.asset_name;
     if (!coverSource) {
       this.$emit('loading-stopped');
@@ -68,6 +80,28 @@ export default {
     setFile(file) {
       this.fileToUpload = file;
     },
+    setUrl(url) {
+      this.newUrl = url;
+    },
+    replaceVideo() {
+      this.$prompt('Youtube URL:', 'Replace video for this story', {
+        confirmButtonText: 'Replace',
+        cancelButtonText: 'Cancel',
+        inputPattern: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/,
+        inputErrorMessage: 'URL format invalid, make sure the URL starts with HTTP or HTTPS'
+      }).then((e) => {
+        const url = e.value;
+        if (!url) this.$message.error('Please enter a new Youtube URL');
+        api.addYoutubeAssetToStory(this.albumId, this.story.id, url)
+          .then(() => {
+            this.videoUrl = url.replace('watch?v=', 'embed/');
+            this.$message.success('Video replaced successfully');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }).catch(() => {});
+    },
     replaceImage() {
       const msgboxOptions = {
         title: 'Replace image',
@@ -78,11 +112,11 @@ export default {
         confirmButtonText: 'Replace'
       };
       this.$msgbox(msgboxOptions).then((action) => {
-        if (!action === 'confirm') return;
+        if (action !== 'confirm') return;
         if (!this.fileToUpload) this.$message.error('Please choose an image to upload');
         const formData = new FormData();
         formData.append('asset', this.fileToUpload.raw);
-        api.addAssetToStory(this.albumId, this.story.id, formData)
+        api.addImageAssetToStory(this.albumId, this.story.id, formData)
           .then((res) => {
             this.$message.success('Image replaced successfully');
             return api.getProtectedImage(res.data.meta.location);
@@ -158,6 +192,12 @@ h2 {
 
 img {
   width: 100%;
+  display: block;
+}
+
+iframe {
+  border: 0;
+  height: 100%;
   display: block;
 }
 

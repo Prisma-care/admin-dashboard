@@ -7,15 +7,30 @@
         </router-link>
         <RenameRemoveDropdown @rename="renameAlbum" @remove="removeAlbum" :confirming-removal="confirmingRemoval"></RenameRemoveDropdown>
       </div>
-      <el-button class="button" @click="addStory">Add story</el-button>
+      <el-dropdown @command="handleDropdownCommand" trigger="click">
+        <el-button class="button add-story">
+          Add Story <i class="el-icon-caret-bottom el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="addImageStory">
+            <i class="el-icon-picture"></i>
+            <span>Image</span>
+          </el-dropdown-item>
+          <el-dropdown-item command="addYoutubeStory">
+            <i class="el-icon-caret-right"></i>
+            <span>Youtube</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </header>
     <div class="story-container">
       <div v-if="ftue" class="ftue">
         <p>
-          No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
+          No stories have been addded to this album yet. Start by <el-button type="text" @click="addImageStory">adding a story now</el-button>.
         </p>
       </div>
-      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" @story-deleted="removeStory(index)" @loading-stopped="loading = false">
+      <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story"
+             @story-deleted="removeStory(index)" @loading-stopped="loading = false">
         {{ story.description }}
       </Story>
     </div>
@@ -26,10 +41,13 @@
 import * as api from '@/api/';
 import Story from '@/components/story/Story';
 import RenameRemoveDropdown from '@/components/RenameRemoveDropdown';
-import CreateStoryModalContent from '@/components/story/CreateStoryModalContent';
+import CreateImageStoryModalContent from '@/components/story/CreateImageStoryModalContent';
+import CreateYoutubeStoryModalContent from '@/components/story/CreateYoutubeStoryModalContent';
 
 export default {
-  components: { Story, RenameRemoveDropdown, CreateStoryModalContent },
+  components: {
+    Story, RenameRemoveDropdown, CreateImageStoryModalContent, CreateYoutubeStoryModalContent
+  },
   data() {
     return {
       album: null,
@@ -37,7 +55,8 @@ export default {
       confirmingRemoval: false,
       description: '',
       file: null,
-      ftue: false
+      ftue: false,
+      storyUrl: ''
     };
   },
   mounted() {
@@ -52,16 +71,54 @@ export default {
     });
   },
   methods: {
+    handleDropdownCommand(method, ...args) {
+      this[method](args);
+    },
     setDescription(description) {
       this.description = description;
     },
     setFile(file) {
       this.file = file;
     },
-    addStory() {
+    setUrl(url) {
+      this.storyUrl = url;
+    },
+    addYoutubeStory() {
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
-        message: this.$createElement(CreateStoryModalContent, {
+        message: this.$createElement(CreateYoutubeStoryModalContent, {
+          on: {
+            'description-updated': this.setDescription,
+            'url-updated': this.setUrl
+          }
+        }),
+        showCancelButton: true,
+        confirmButtonText: 'Add Story',
+        cancelButtonText: 'Cancel'
+      }).then((action) => {
+        if (action !== 'confirm') return;
+        if (!this.storyUrl) this.$message.error('The url field is required');
+        let newStory;
+        api.addStory(this.album.id, this.description)
+          .then((res) => {
+            newStory = res.data.response;
+            return api.addYoutubeAssetToStory(this.album.id, res.data.response.id, this.storyUrl);
+          })
+          .then((res) => {
+            newStory.asset_name = res.data.response.source;
+            newStory.asset_type = res.data.response.type;
+            this.album.heritage.push(newStory);
+            this.ftue = false;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }).catch(() => {});
+    },
+    addImageStory() {
+      this.$msgbox({
+        title: `Add a new story to "${this.album.title}"`,
+        message: this.$createElement(CreateImageStoryModalContent, {
           on: {
             'description-updated': this.setDescription,
             'file-chosen': this.setFile
@@ -71,18 +128,19 @@ export default {
         confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
       }).then((action) => {
-        if (!action === 'confirm') return;
+        if (action !== 'confirm') return;
         if (!this.description) this.$message.error('The description field is required');
         const formData = new FormData();
         formData.append('asset', this.file.raw);
+        let newStory;
         api.addStory(this.album.id, this.description)
           .then((res) => {
-            this.album.heritage.push(res.data.response);
-            return api.addAssetToStory(this.album.id, res.data.response.id, formData);
+            newStory = res.data.response;
+            return api.addImageAssetToStory(this.album.id, res.data.response.id, formData);
           })
           .then((res) => {
-            const amountOfHeritage = this.album.heritage.length;
-            this.album.heritage[amountOfHeritage - 1].asset_name = res.data.meta.location;
+            newStory.asset_name = res.data.meta.location;
+            this.album.heritage.push(newStory);
             this.ftue = false;
           })
           .catch((err) => {
@@ -147,7 +205,7 @@ header a {
 .story {
   flex-grow: 1;
   margin: 10px 0 0 20px;
-  /* 3 items per row, - margin - border */
+  /* 2 items per row, - margin - border */
   width: calc(50% - 20px - 2px);
 }
 
