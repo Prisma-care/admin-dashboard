@@ -7,8 +7,8 @@
         </router-link>
         <RenameRemoveDropdown @rename="renameAlbum" @remove="removeAlbum" :confirming-removal="confirmingRemoval"></RenameRemoveDropdown>
       </div>
-      <el-dropdown @command="handleDropdownCommand">
-        <el-button class="button">
+      <el-dropdown @command="handleDropdownCommand" trigger="click">
+        <el-button class="button add-story">
           Add Story <i class="el-icon-caret-bottom el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
@@ -17,7 +17,7 @@
             <span>Image</span>
           </el-dropdown-item>
           <el-dropdown-item command="addYoutubeStory">
-            <i class="el-icon-picture"></i>
+            <i class="el-icon-caret-right"></i>
             <span>Youtube</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -26,7 +26,7 @@
     <div class="story-container">
       <div v-if="ftue" class="ftue">
         <p>
-          No have been addded to this album yet. Start by <el-button type="text" @click="addStory">adding a story now</el-button>.
+          No have been addded to this album yet. Start by <el-button type="text" @click="addImageStory">adding a story now</el-button>.
         </p>
       </div>
       <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story" @story-deleted="removeStory(index)" @loading-stopped="loading = false">
@@ -74,6 +74,9 @@ export default {
     },
     setFile(file) {
       this.file = file;
+    },
+    addYoutubeStory() {
+      //
     },
     addImageStory() {
       this.$msgbox({
