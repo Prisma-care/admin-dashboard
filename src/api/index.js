@@ -12,12 +12,16 @@ export const addStory = (albumId, description) => (
 
 export const deleteStory = (albumId, storyId) => Vue.axios.delete(`album/${albumId}/heritage/${storyId}`);
 
-export const addAssetToStory = (albumId, storyId, asset) => (
+export const addImageAssetToStory = (albumId, storyId, asset) => (
   Vue.axios.post(`album/${albumId}/heritage/${storyId}/asset`, asset, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
   })
+);
+
+export const addYoutubeAssetToStory = (albumId, storyId, url) => (
+  Vue.axios.post(`album/${albumId}/heritage/${storyId}/asset`, { asset: url, assetType: 'youtube' })
 );
 
 export const updateStoryDescription = (albumId, storyId, description) => (

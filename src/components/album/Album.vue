@@ -34,6 +34,7 @@ export default {
   },
   mounted() {
     if (!this.album.heritage || !this.album.heritage[0]) return;
+    this.heritageAmount = this.album.heritage.length;
     const coverSource = this.album.heritage[0].asset_name;
     if (!coverSource) return;
     api.getProtectedImage(coverSource).then((response) => {
@@ -42,7 +43,6 @@ export default {
     }).catch((err) => {
       console.log(err);
     });
-    this.heritageAmount = this.album.heritage.length;
   },
   methods: {
     renameAlbum() {
