@@ -97,7 +97,7 @@ export default {
         cancelButtonText: 'Cancel'
       }).then((action) => {
         if (action !== 'confirm') return;
-        if (!this.url) this.$message.error('The url field is required');
+        if (!this.storyUrl) this.$message.error('The url field is required');
         api.addStory(this.album.id, this.description)
           .then((res) => {
             this.album.heritage.push(res.data.response);
@@ -203,7 +203,7 @@ header a {
 .story {
   flex-grow: 1;
   margin: 10px 0 0 20px;
-  /* 3 items per row, - margin - border */
+  /* 2 items per row, - margin - border */
   width: calc(50% - 20px - 2px);
 }
 
