@@ -26,7 +26,7 @@
     <div class="story-container">
       <div v-if="ftue" class="ftue">
         <p>
-          No have been addded to this album yet. Start by <el-button type="text" @click="addImageStory">adding a story now</el-button>.
+          No stories have been addded to this album yet. Start by <el-button type="text" @click="addImageStory">adding a story now</el-button>.
         </p>
       </div>
       <Story v-else-if="album" v-for="(story, index) in album.heritage" :key="story.id" :story="story" :album-id="album.id" class="story"
