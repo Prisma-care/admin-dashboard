@@ -127,7 +127,7 @@ export default {
         confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
       }).then((action) => {
-        if (!action !== 'confirm') return;
+        if (action !== 'confirm') return;
         if (!this.description) this.$message.error('The description field is required');
         const formData = new FormData();
         formData.append('asset', this.file.raw);
