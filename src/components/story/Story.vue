@@ -100,7 +100,9 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-      }).catch(() => {});
+      }).catch((err) => {
+        console.log(err);
+      });
     },
     replaceImage() {
       const msgboxOptions = {

@@ -156,15 +156,13 @@ export default {
         const albumTitle = confirmed.value;
         api.renameDefaultAlbum(this.album.id, albumTitle).then(() => {
           this.album.title = albumTitle;
-          this.$message({
-            showClose: true,
-            message: 'Album renamed successfully',
-            type: 'success'
-          });
+          this.$message.success('Album renamed successfully');
         }).catch((err) => {
           console.log(err);
         });
-      }).catch(() => {});
+      }).catch((err) => {
+        console.log(err);
+      });
     },
     removeAlbum() {
       if (!this.confirmingRemoval) {
