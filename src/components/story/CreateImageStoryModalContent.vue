@@ -26,6 +26,11 @@ export default {
     };
   },
   methods: {
+    clearContents() {
+      this.description = '';
+      this.file = '';
+      this.preview = null;
+    },
     setDescription() {
       if (this.description) { this.$emit('description-updated', this.description); }
     },

@@ -17,6 +17,10 @@ export default {
     };
   },
   methods: {
+    clearContents() {
+      this.description = '';
+      this.url = '';
+    },
     setDescription() {
       if (this.description) { this.$emit('description-updated', this.description); }
     },
