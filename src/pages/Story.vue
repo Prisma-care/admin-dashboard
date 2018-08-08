@@ -56,7 +56,9 @@ export default {
       description: '',
       file: null,
       ftue: false,
-      storyUrl: ''
+      storyUrl: '',
+      imgStoryModal: null,
+      youtubeStoryModal: null
     };
   },
   mounted() {
@@ -84,14 +86,15 @@ export default {
       this.storyUrl = url;
     },
     addYoutubeStory() {
+      this.youtubeStoryModal = this.$createElement(CreateYoutubeStoryModalContent, {
+        on: {
+          'description-updated': this.setDescription,
+          'url-updated': this.setUrl
+        }
+      });
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
-        message: this.$createElement(CreateYoutubeStoryModalContent, {
-          on: {
-            'description-updated': this.setDescription,
-            'url-updated': this.setUrl
-          }
-        }),
+        message: this.youtubeStoryModal,
         showCancelButton: true,
         confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
@@ -107,6 +110,7 @@ export default {
           .then((res) => {
             newStory.asset_name = res.data.response.source;
             newStory.asset_type = res.data.response.type;
+            this.youtubeStoryModal.componentInstance.clearContents();
             this.album.heritage.push(newStory);
             this.ftue = false;
           })
@@ -116,14 +120,15 @@ export default {
       }).catch(() => {});
     },
     addImageStory() {
+      this.imgStoryModal = this.$createElement(CreateImageStoryModalContent, {
+        on: {
+          'description-updated': this.setDescription,
+          'file-chosen': this.setFile
+        }
+      });
       this.$msgbox({
         title: `Add a new story to "${this.album.title}"`,
-        message: this.$createElement(CreateImageStoryModalContent, {
-          on: {
-            'description-updated': this.setDescription,
-            'file-chosen': this.setFile
-          }
-        }),
+        message: this.imgStoryModal,
         showCancelButton: true,
         confirmButtonText: 'Add Story',
         cancelButtonText: 'Cancel'
@@ -140,6 +145,7 @@ export default {
           })
           .then((res) => {
             newStory.asset_name = res.data.meta.location;
+            this.imgStoryModal.componentInstance.clearContents();
             this.album.heritage.push(newStory);
             this.ftue = false;
           })
